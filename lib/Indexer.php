@@ -224,11 +224,14 @@ class Indexer extends Base {
         } else if ($field->type instanceof \ProcessWire\FieldtypePage) {
             // Note: unlike with FieldtypeFieldsetPage above, here we want to check for both FieldtypePage
             // AND any class that might potentially extend it, which is why we're using instanceof.
+            /**
             $index = $this->getPageReferenceIndexValue($object, $field, [
                 'id',
                 'name',
                 'title',
             ], $prefix);
+            */
+            $index = $this->getPageReferenceIndexValue($object, $field, $indexed_fields, $prefix);
         } else {
             $index_value = $this->getIndexValue($object, $field, $indexed_fields);
             $index[$prefix . $field->name] = $index_value->getValue();
