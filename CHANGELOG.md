@@ -7,6 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.38.6] - 2025-03-14
+
+### Changed
+- Indexer::isRepeatableField is now hookable method.
+
+## [0.38.5] - 2025-03-14
+
+### Fixed
+- Temporarily disabled object to string conversion in Indexer::getFormattedFieldValue, as it appears to be in conflict with some fieldtypes (e.g. ProFields Table). Array handling was left in place, but objects require additional testing.
+
+## [0.38.4] - 2025-03-13
+
+### Fixed
+- Fixed an issue where PageTitleLanguage fields inside repeaters could in some cases return an array, causing type error due to Indexer::getFormattedFieldValue not enforcing string values. Thanks to @gebeer.
+
+## [0.38.3] - 2025-03-13
+
+### Fixed
+- Fixed notices caused by PHP 8.4 deprecating implicitly nullable types.
+
 ## [0.38.2] - 2025-02-02
 
 ### Fixed

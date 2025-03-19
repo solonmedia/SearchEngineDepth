@@ -5,7 +5,7 @@ namespace SearchEngine;
 /**
  * SearchEngine Indexer
  *
- * @version 0.16.1
+ * @version 0.16.4
  * @author Teppo Koivula <teppo.koivula@gmail.com>
  * @license Mozilla Public License v2.0 http://mozilla.org/MPL/2.0/
  */
@@ -52,7 +52,7 @@ class Indexer extends Base {
      * @param array $args Additional arguments.
      * @return int The number of indexed pages.
      */
-    public function indexPages(string $selector = null, bool $save = true, array $args = []) {
+    public function indexPages(?string $selector = null, bool $save = true, array $args = []) {
         $indexed_pages = 0;
         $return = isset($args['return']) && $args['return'] == 'index' ? 'index' : 'status';
         $index = [];
@@ -414,13 +414,31 @@ class Indexer extends Base {
      * @return mixed
      */
     protected function getFormattedFieldValue(\ProcessWire\WireData $object, string $field_name) {
+
+        $value = null;
+
+        // Get initial value from object
         if ($object instanceof \ProcessWire\Page) {
-            return $object->getFormatted($field_name);
+            $value = $object->getFormatted($field_name);
+        } elseif ($object instanceof \ProcessWire\Field && method_exists($object, 'getFieldValue')) {
+            $value = $object->getFieldValue($field_name, true);
+        } else {
+            $value = $object->get($field_name);
         }
-        if ($object instanceof \ProcessWire\Field && method_exists($object, 'getFieldValue')) {
-            return $object->getFieldValue($field_name, true);
+
+        // Handle array values
+        if (is_array($value)) {
+            $value = implode(' ', $value);
         }
-        return $object->get($field_name);
+
+        // Handle object values - commented out for now, needs more testing (see GitHub PR #29)
+        // if (is_object($value) && method_exists($value, '__toString')) {
+        //     $value = (string) $value;
+        // } elseif (is_object($value)) {
+        //     $value = '';
+        // }
+
+        return $value;
     }
 
     /**
@@ -471,7 +489,7 @@ class Indexer extends Base {
      * @param \ProcessWire\Field $field
      * @return bool
      */
-    protected function isRepeatableField(\ProcessWire\Field $field): bool {
+    protected function ___isRepeatableField(\ProcessWire\Field $field): bool {
         return in_array($field->type, [
             'FieldtypePageTable',
             'FieldtypeRepeater',
