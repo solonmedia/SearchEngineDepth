@@ -1,6 +1,6 @@
 {
-    "title": "SearchEngine",
-    "summary": "SearchEngine is a module for indexing and searching site contents.",
+    "title": "SearchEngineDepth",
+    "summary": "SearchEngine is a module for indexing and searching site contents. SearchEngineDepth modifies the indexer to pull deeper Repeater and RepeaterMatrix item values",
     "icon": "search",
     "version": "0.39.2",
     "author": "Teppo Koivula",
